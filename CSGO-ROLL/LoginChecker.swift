@@ -59,9 +59,21 @@ class LoginChecker: NSObject, WKNavigationDelegate, ObservableObject {
     }
     
     /*
-     first two can be used to access the daily boxes
+     command to get to the stash
      document.querySelectorAll('a.mat-button')[1].click();
-     document.querySelectorAll('a.nav-link')[10].click();
+     document.querySelectorAll('a.nav-link')[13].click();
+     
+     to deposit max amount
+     document.querySelector('button[data-test="max"]')?.click();
+     
+     get current deposit value
+     document.querySelector('input[data-test="bet-amount-input-fields"]').value;
+     
+     deposit money
+     document.querySelector('button[data-cy="btn-deposit-withdraw"]').click();
+
+
+
      */
 
 }
