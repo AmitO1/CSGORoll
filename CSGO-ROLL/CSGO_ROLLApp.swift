@@ -37,7 +37,6 @@ struct CSGO_ROLLApp: App {
             if phase == .background {
                 print("checking if logged in")
                 LoginChecker.shared.checkLoginStatus()
-                //currently not in use
             }
         }
         

@@ -9,11 +9,58 @@ import SwiftUI
 
 struct LoggedInView: View {
     @ObservedObject var loginChecker = LoginChecker.shared
+    @State private var selectedOption = "Alone"
+    
+    let options = ["Alone", "Bots"]
+    
     var body: some View {
-        VStack {
-            Text("Welcome, Motherfucker i didnt have power to put your name in")
-                .font(.title)
-                .padding()
+        VStack(spacing: 20) {
+            VStack(spacing: 8) {
+                Text("Welcome Back Motherfucker!")
+                    .font(.largeTitle)
+                    .fontWeight(.semibold)
+                
+                Text("Enjoy your rewards and keep collecting!")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+            .padding(.top, 40)
+            
+            Divider()
+            
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Text("Time until boxes:")
+                        .font(.headline)
+                    Spacer()
+                    Text("02:15:30") // Replace with dynamic value
+                        .font(.body)
+                        .foregroundColor(.blue)
+                }
+                
+                HStack {
+                    Text("Total saving:")
+                        .font(.headline)
+                    Spacer()
+                    Text("$123.45") // Replace with dynamic value
+                        .font(.body)
+                        .foregroundColor(.green)
+                }
+                
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Option:")
+                        .font(.headline)
+                    Picker("Option", selection: $selectedOption) {
+                        ForEach(options, id: \.self) { option in
+                            Text(option).tag(option)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                }
+            }
+            .padding(.horizontal, 20)
+            
+            Spacer()
             
             Button(action: {
                 LoginChecker.shared.isLoggedIn = false
@@ -24,10 +71,13 @@ struct LoggedInView: View {
                     .padding()
                     .background(Color.red)
                     .foregroundColor(.white)
-                    .cornerRadius(10)
+                    .cornerRadius(12)
+                    .shadow(radius: 3)
             }
-            .padding()
+            .padding(.horizontal, 20)
+            .padding(.bottom, 40)
         }
+        .padding()
     }
 }
 
