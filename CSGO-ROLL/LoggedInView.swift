@@ -76,7 +76,7 @@ struct LoggedInView: View {
                 Button(action: {
                     resetEarnings()
                 }) {
-                    Text("Log Out")
+                    Text("Reset Earnings")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
