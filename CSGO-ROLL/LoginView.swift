@@ -9,31 +9,43 @@ import SwiftUI
 
 struct LoginView: View {
     @State private var showWebView = false
+    @State private var isLoggedIn = LoginChecker.shared.isLoggedIn
     @ObservedObject var loginChecker = LoginChecker.shared
     
-    var body: some View{
+    var body: some View {
         VStack {
-            Text("CSGORoll Auto Login")
-                .font(.title)
-                .padding()
-            
-            Button(action: {
-                showWebView = true
-            }) {
-                Text("Login to CSGORoll")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
+            if isLoggedIn {
+                // If logged in, show the logged-in view
+                LoggedInView()
+            } else {
+                // If not logged in, show the WebView button
+                Text("CSGORoll Auto Login")
+                    .font(.title)
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                
+                Button(action: {
+                    // Check login status after button click
+                    if loginChecker.isLoggedIn {
+                        isLoggedIn = true
+                    } else {
+                        showWebView = true
+                    }
+                }) {
+                    Text("Login to CSGORoll")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .padding()
+                .sheet(isPresented: $showWebView, onDismiss: {
+                    LoginChecker.shared.checkLoginStatus()
+                }) {
+                    WebView(url: URL(string: "https://www.csgoroll.com")!)
+                }
             }
-            .padding()
-        }
-        .sheet(isPresented: $showWebView, onDismiss: {
-            LoginChecker.shared.checkLoginStatus()
-        }){
-            WebView(url: URL(string : "https://www.csgoroll.com")!)
         }
     }
 }
