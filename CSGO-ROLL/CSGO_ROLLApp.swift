@@ -16,7 +16,6 @@ struct CSGO_ROLLApp: App {
     init(){
         LoginChecker.shared.checkLoginStatus()
         BackgroundTaskManager.shared.registerBackgroundTask()
-        BackgroundTaskManager.shared.scheduleBackgroundTask()
     }
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -39,6 +38,7 @@ struct CSGO_ROLLApp: App {
             if phase == .background {
                 print("checking if logged in")
                 LoginChecker.shared.checkLoginStatus()
+                BackgroundTaskManager.shared.scheduleBackgroundTask()
             }
         }
         

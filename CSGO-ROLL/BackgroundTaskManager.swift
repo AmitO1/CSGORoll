@@ -22,6 +22,7 @@ class BackgroundTaskManager {
     }
 
     func scheduleBackgroundTask() {
+        print("test to see if scheduling works!")
         let request = BGAppRefreshTaskRequest(identifier: "com.yourapp.checkCountdown")
         request.earliestBeginDate = Date(timeIntervalSinceNow: 3600)
         
