@@ -9,7 +9,7 @@ import Foundation
 import WebKit
 import SwiftUI
 
-class BalanceChecker: NSObject {
+class BalanceChecker: NSObject, WKNavigationDelegate {
     static let shared = BalanceChecker()
     var webView: WKWebView!
     
@@ -98,10 +98,101 @@ class BalanceChecker: NSObject {
             }
         }
     }
-}
-
-extension BalanceChecker: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        print("WebView Finished loading")
+    //NOTHING IMPLEMENTED YET
+    func openBoxes() {
+        
+        if webView == nil {
+            let webviewConfiguration = WKWebViewConfiguration()
+            webView = WKWebView(frame: .zero, configuration: webviewConfiguration)
+            webView.isHidden = true
+        }
+        
+        let url = URL(string: "https://www.csgoroll.com")!
+        let request = URLRequest(url: url)
+        webView.load(request)
+        
+        webView.navigationDelegate = self
     }
+    //DOESNT WORK YET
+    func checkTimeLeft(completion: @escaping (String?) -> Void) {
+        if webView == nil {
+            let webviewConfiguration = WKWebViewConfiguration()
+            webView = WKWebView(frame: .zero, configuration: webviewConfiguration)
+            webView.isHidden = false
+        }
+
+        let url = URL(string: "https://www.csgoroll.com/boxes/view/world/level-2")!
+        let request = URLRequest(url: url)
+        webView.load(request)
+        
+        webView.navigationDelegate = self
+        
+        // Give some time for the page to load
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            // JavaScript to fetch the countdown and store it in window.countdownValue
+            let jsCode = """
+                    let countdownElement = document.querySelector('cw-countdown span');
+                    let countdownText = countdownElement.textContent.trim();
+
+                    let countdownValue = countdownText;
+                    window.countdownValue = countdownValue;
+                    
+            """
+            
+            self.webView.evaluateJavaScript(jsCode) { result, error in
+                if let error = error {
+                    print("JavaScript error: \(error.localizedDescription)")
+                } else {
+                    print("Countdown stored in window.countdownValue")
+                    completion(nil)
+                }
+                
+                self.webView.evaluateJavaScript("window.countdownValue"){ result, error in
+                    if let error = error {
+                        print("error retreiving window countdown: \(error)")
+                        completion(nil)
+                    }
+                    if let countdownValue = result as? String {
+                        print("Countdown: \(countdownValue)")
+                        completion(countdownValue)
+                    }
+                    else{
+                        print("unkown countdown")
+                        completion(nil)
+                    }
+                }
+            }
+        }
+        
+    }
+
 }
+/*
+ to open daily boxes:
+ document.querySelectorAll('a.mat-button')[1].click();
+ document.querySelectorAll('a.nav-link')[10].click();
+ 
+ or just use this link:
+ https://www.csgoroll.com/boxes/world/daily-free
+ 
+ to click create battle:
+ document.querySelector('button[mat-flat-button] span[inlinesvg="assets/icons/pvp.svg"]').click();
+ 
+ click to choose which battle type 2v2 1v1 4v4:
+ document.querySelector('#mat-select-2').click();
+ 
+ to choose 2v2:
+ document.getElementById('mat-option-7')?.click();
+ 
+ to start the battle:
+ document.querySelector('[data-test="btn-unboxing-create-duel"]').click();
+ */
+
+/*
+ To check time left:
+ https://www.csgoroll.com/boxes/view/world/level-2-whv8smubq5
+ document.querySelector('cw-countdown').innerText;
+ 
+ */
+
+

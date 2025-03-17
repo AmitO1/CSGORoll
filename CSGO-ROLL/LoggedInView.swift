@@ -5,6 +5,7 @@ struct LoggedInView: View {
     @State private var totalDepositAmount: Double = 0.0
     @State private var isLoading: Bool = false
     @State private var selectedOption = "Alone"
+    @State private var countdownValue:String = ""
     
     let options = ["Alone", "Bots"]
     
@@ -29,7 +30,7 @@ struct LoggedInView: View {
                         Text("Time until boxes:")
                             .font(.headline)
                         Spacer()
-                        Text("02:15:30") // Replace with dynamic value
+                        Text(countdownValue.isEmpty ? "Loading..." : countdownValue) // Replace with dynamic value
                             .font(.body)
                             .foregroundColor(.blue)
                     }
@@ -93,6 +94,14 @@ struct LoggedInView: View {
                 let defaults = UserDefaults.standard
                 if let storedAmount = defaults.value(forKey: "totalDepositAmount") as? Double {
                     totalDepositAmount = storedAmount
+                }
+                BalanceChecker.shared.checkTimeLeft{value in
+                    if let value = value{
+                        countdownValue = value
+                    }
+                    else{
+                        countdownValue = "Unkown"
+                    }
                 }
             }
             .navigationBarItems(leading: Button(action: {
