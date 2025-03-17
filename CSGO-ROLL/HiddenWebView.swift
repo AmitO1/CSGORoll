@@ -9,8 +9,8 @@ import Foundation
 import WebKit
 import SwiftUI
 
-class BalanceChecker: NSObject, WKNavigationDelegate {
-    static let shared = BalanceChecker()
+class HiddenWebView: NSObject, WKNavigationDelegate {
+    static let shared = HiddenWebView()
     var webView: WKWebView!
     
     func DepositWinnings(completion: @escaping (Double?) -> Void) {

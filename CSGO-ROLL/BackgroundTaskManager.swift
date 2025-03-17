@@ -35,7 +35,7 @@ class BackgroundTaskManager {
 
     func handleBackgroundTask(task: BGTask) {
         // Perform the countdown check
-        BalanceChecker.shared.checkTimeLeft { value in
+        HiddenWebView.shared.checkTimeLeft { value in
             if let countdown = value, countdown == "00:00:00" {
                 // Run your script here
                 print("Countdown reached zero, running script...")

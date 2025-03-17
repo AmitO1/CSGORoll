@@ -95,7 +95,7 @@ struct LoggedInView: View {
                 if let storedAmount = defaults.value(forKey: "totalDepositAmount") as? Double {
                     totalDepositAmount = storedAmount
                 }
-                BalanceChecker.shared.checkTimeLeft{value in
+                HiddenWebView.shared.checkTimeLeft{value in
                     if let value = value{
                         countdownValue = value
                     }
@@ -119,7 +119,7 @@ struct LoggedInView: View {
     
     private func depositAmount() {
         isLoading = true
-        BalanceChecker.shared.DepositWinnings { newTotal in
+        HiddenWebView.shared.DepositWinnings { newTotal in
             DispatchQueue.main.async{
                 isLoading = false
                 if let newTotal = newTotal {
