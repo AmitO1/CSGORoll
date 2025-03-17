@@ -15,6 +15,8 @@ struct CSGO_ROLLApp: App {
     
     init(){
         LoginChecker.shared.checkLoginStatus()
+        BackgroundTaskManager.shared.registerBackgroundTask()
+        BackgroundTaskManager.shared.scheduleBackgroundTask()
     }
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([

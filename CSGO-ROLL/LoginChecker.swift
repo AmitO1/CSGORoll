@@ -71,9 +71,7 @@ class LoginChecker: NSObject, WKNavigationDelegate, ObservableObject {
      
      deposit money
      document.querySelector('button[data-cy="btn-deposit-withdraw"]').click();
-
-
-
+     
      */
 
 }
